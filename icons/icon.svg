@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Type Matchup</title>
+  <desc id="desc">A triangle of water, fire and grass. Arrows point from Water to Fire, Fire to Grass, and Grass to Water: each type beats the next.</desc>
+  <!-- Favicon and "any" app icon: a rounded tile with the artwork filling most of it. The maskable variant (icon-maskable.svg) shares this artwork. -->
+  <rect width="512" height="512" rx="112" fill="#14161c"/>
+  <g transform="translate(252 254) scale(1.12)">
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <!-- Arrows run along an equilateral triangle; each takes the attacker's colour. -->
+      <!-- Water beats Fire. -->
+      <g transform="translate(62 4) rotate(60)" fill="#6390F0" stroke="#6390F0">
+        <path d="M-32 0H12" fill="none" stroke-width="18"/>
+        <path d="M4-21 36 0 4 21Z" stroke-width="4"/>
+      </g>
+      <!-- Fire beats Grass. -->
+      <g transform="translate(0 108) rotate(180)" fill="#EE8130" stroke="#EE8130">
+        <path d="M-32 0H12" fill="none" stroke-width="18"/>
+        <path d="M4-21 36 0 4 21Z" stroke-width="4"/>
+      </g>
+      <!-- Grass beats Water. -->
+      <g transform="translate(-62 4) rotate(-60)" fill="#7AC74C" stroke="#7AC74C">
+        <path d="M-32 0H12" fill="none" stroke-width="18"/>
+        <path d="M4-21 36 0 4 21Z" stroke-width="4"/>
+      </g>
+    </g>
+    <!-- Water: a droplet with a highlight. -->
+    <g transform="translate(0 -104)">
+      <path fill="#6390F0" d="M0-66C-14-44-51-7-51 16a51 51 0 0 0 102 0C51-7 14-44 0-66Z"/>
+      <path d="M-31 16c0 18 13 31 31 31" fill="none" stroke="#dce9ff" stroke-width="10" stroke-linecap="round"/>
+    </g>
+    <!-- Fire: a flame with a lighter inner flame. -->
+    <g transform="translate(122 108) scale(0.94) translate(-355 -322)">
+      <path fill="#EE8130" d="M361 251c8 32-24 42-22 61-13-5-18-17-17-30-20 22-24 39-24 54a57 57 0 0 0 114 0c0-25-13-43-26-55 2 18-4 26-10 29 3-22-2-44-15-59Z"/>
+      <path fill="#ffe3a0" d="M357 320c-2 18-23 27-23 42a22 22 0 0 0 44 0c0-17-14-25-21-42Z"/>
+    </g>
+    <!-- Grass: a leaf with a stem and a darker centre vein. -->
+    <g transform="translate(-114 104) rotate(45)" stroke-linecap="round">
+      <path d="M0 46V68" stroke="#7AC74C" stroke-width="11"/>
+      <path fill="#7AC74C" d="M0-62C44-33 44 27 0 56-44 27-44-33 0-62Z"/>
+      <path d="M0 44V-42" stroke="#4E8F2C" stroke-width="7"/>
+    </g>
+  </g>
+</svg>
