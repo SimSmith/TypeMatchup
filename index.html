@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Type Matchup</title>
+  <meta name="description" content="Pick one or two types and see how effective every type matchup is, attacking or defending." />
+  <meta name="theme-color" content="#14161c" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%23EE8130'/><path d='M2 16h28' stroke='%2314161c' stroke-width='3'/><circle cx='16' cy='16' r='5' fill='%23fff' stroke='%2314161c' stroke-width='3'/></svg>" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="top">
+    <h1>Type Matchup</h1>
+    <nav class="views" role="tablist" aria-label="View">
+      <button role="tab" data-view="matchups" aria-selected="true">Matchups</button>
+      <button role="tab" data-view="chart" aria-selected="false">Full chart</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="selection" aria-label="Selected types">
+      <div class="slots" id="slots"></div>
+      <button class="clear" id="clear" type="button">Clear</button>
+    </section>
+
+    <div class="mode" role="radiogroup" aria-label="Mode">
+      <button role="radio" data-mode="defending" aria-checked="true">Defending</button>
+      <button role="radio" data-mode="attacking" aria-checked="false">Attacking</button>
+    </div>
+    <p class="hint" id="hint"></p>
+
+    <section class="picker" id="picker" aria-label="Pick types"></section>
+
+    <section id="matchups" class="results" aria-live="polite"></section>
+    <section id="chart" class="chart-wrap" hidden></section>
+  </main>
+
+  <footer class="foot">
+    Gen&nbsp;6+ type chart · Tap up to two types · Link updates as you pick, so you can share it.
+  </footer>
+
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>
