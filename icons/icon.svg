@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Type Matchup</title>
+  <desc id="desc">A triangle of water, fire and grass. Arrows point from Water to Fire, Fire to Grass, and Grass to Water: each type beats the next.</desc>
+  <rect width="512" height="512" fill="#14161c"/>
+  <!-- Keep the artwork inside the central 80% safe circle for home-screen masks. -->
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <!-- Water beats Fire. -->
+    <g transform="translate(303 202) rotate(60)" fill="#6390F0" stroke="#6390F0">
+      <path d="M0 0H56" fill="none" stroke-width="13"/>
+      <path d="M51-15 72 0 51 15Z" stroke="none"/>
+    </g>
+    <!-- Fire beats Grass. -->
+    <g transform="translate(298 352) rotate(180)" fill="#EE8130" stroke="#EE8130">
+      <path d="M0 0H63" fill="none" stroke-width="13"/>
+      <path d="M58-15 79 0 58 15Z" stroke="none"/>
+    </g>
+    <!-- Grass beats Water. -->
+    <g transform="translate(172 263) rotate(-60)" fill="#7AC74C" stroke="#7AC74C">
+      <path d="M0 0H56" fill="none" stroke-width="13"/>
+      <path d="M51-15 72 0 51 15Z" stroke="none"/>
+    </g>
+  </g>
+  <!-- Water: a broad droplet, legible without a label. -->
+  <path fill="#6390F0" d="M256 83C242 105 205 142 205 165a51 51 0 0 0 102 0c0-23-37-60-51-82Z"/>
+  <path d="M225 165c0 18 13 31 31 31" fill="none" stroke="#dce9ff" stroke-width="10" stroke-linecap="round"/>
+  <!-- Fire: a single flame with a contrasting inner flame. -->
+  <path fill="#EE8130" d="M361 251c8 32-24 42-22 61-13-5-18-17-17-30-20 22-24 39-24 54a57 57 0 0 0 114 0c0-25-13-43-26-55 2 18-4 26-10 29 3-22-2-44-15-59Z"/>
+  <path fill="#ffe3a0" d="M357 320c-2 18-23 27-23 42a22 22 0 0 0 44 0c0-17-14-25-21-42Z"/>
+  <!-- Grass: a leaf and diagonal vein. -->
+  <path fill="#7AC74C" d="M102 363c-8-60 27-91 95-91 9 64-25 101-80 99Z"/>
+  <path d="m109 378 66-77" fill="none" stroke="#14161c" stroke-width="11" stroke-linecap="round"/>
+</svg>

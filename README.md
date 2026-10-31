@@ -23,7 +23,21 @@ Any static file server works – there is no build step.
 | `src/types.js` | Type list, colours, effectiveness chart and matchup helpers |
 | `src/app.js` | UI rendering and state (selection, mode, view, URL hash) |
 | `index.html`, `styles.css` | Page shell and styling |
+| `icons/`, `site.webmanifest` | Browser and home-screen icons, with an editable SVG source |
 | `test/` | `node --test` checks for the chart data |
+
+## App icon
+
+The icon shows the super-effective cycle **Water → Fire → Grass → Water**.
+`icons/icon.svg` is the source; the page uses it as a scalable favicon with a
+32 px PNG fallback. The 180 px Apple touch icon supports iPhone/iPad home-screen
+shortcuts, and `site.webmanifest` supplies 192 px and 512 px app icons. The square,
+opaque design keeps the symbols inside the maskable icon safe area; the operating
+system supplies its own corner shape.
+
+After editing the SVG, install Inkscape and run `sh scripts/generate-icons.sh`.
+Commit the exported PNGs with the SVG. This is a development-only step: the app
+still has no runtime dependencies or deployment build step.
 
 ## Deploy to Vercel
 
