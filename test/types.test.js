@@ -51,3 +51,11 @@ test("attacking view uses best coverage", () => {
   assert.equal(normal.multiplier, 2);
   assert.deepEqual(normal.by, ["Fighting"]);
 });
+
+test("groups are ordered 4, 2, 0, 1/4, 1/2, 1", () => {
+  const rows = [1, 0.5, 4, 0, 2, 0.25].map((multiplier, i) => ({ type: TYPES[i], multiplier }));
+  assert.deepEqual(groupByMultiplier(rows).map((g) => g.multiplier), [4, 2, 0, 0.25, 0.5, 1]);
+  // Steel/Flying: weak to Fire/Electric, immune to Ground/Poison, double-resists Bug/Grass/Steel.
+  const order = groupByMultiplier(defendingMatchups(["Steel", "Flying"])).map((g) => g.multiplier);
+  assert.deepEqual(order, [2, 0, 0.25, 0.5, 1]);
+});

@@ -73,7 +73,10 @@ export function attackingMatchups(attackers) {
   });
 }
 
-/** Group matchup rows by multiplier, highest first. */
+// Display order for result groups: the interesting matchups first, neutral last.
+export const GROUP_ORDER = [4, 2, 0, 0.25, 0.5, 1];
+
+/** Group matchup rows by multiplier, in GROUP_ORDER. */
 export function groupByMultiplier(rows) {
   const groups = new Map();
   for (const row of rows) {
@@ -81,6 +84,6 @@ export function groupByMultiplier(rows) {
     groups.get(row.multiplier).push(row);
   }
   return [...groups.entries()]
-    .sort((a, b) => b[0] - a[0])
+    .sort((a, b) => GROUP_ORDER.indexOf(a[0]) - GROUP_ORDER.indexOf(b[0]))
     .map(([multiplier, items]) => ({ multiplier, items }));
 }
