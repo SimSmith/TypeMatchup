@@ -41,9 +41,20 @@ const LABELS = {
 // ---------- state <-> URL ----------
 
 function readHash() {
-  const [mode, types] = location.hash.replace(/^#\/?/, "").split("/");
-  if (mode === "attacking" || mode === "defending") state.mode = mode;
-  if (mode === "chart") state.view = "chart";
+  // Formats: #defending/fire+flying, #attacking/fire, #chart/attacking/fire
+  // (legacy #chart/fire is still accepted and keeps the current mode).
+  const parts = location.hash.replace(/^#\/?/, "").split("/");
+  const isMode = (m) => m === "attacking" || m === "defending";
+  let types = "";
+  if (parts[0] === "chart") {
+    state.view = "chart";
+    if (isMode(parts[1])) { state.mode = parts[1]; types = parts[2]; }
+    else types = parts[1];
+  } else {
+    state.view = "matchups";
+    if (isMode(parts[0])) state.mode = parts[0];
+    types = parts[1];
+  }
   const picked = (types || "")
     .split("+")
     .map((t) => TYPES.find((x) => x.toLowerCase() === t.toLowerCase()))
@@ -53,7 +64,8 @@ function readHash() {
 
 function writeHash() {
   const types = state.selected.map((t) => t.toLowerCase()).join("+");
-  const hash = state.view === "chart" ? `#chart/${types}` : `#${state.mode}/${types}`;
+  const prefix = state.view === "chart" ? `#chart/${state.mode}` : `#${state.mode}`;
+  const hash = `${prefix}/${types}`;
   history.replaceState(null, "", hash.replace(/\/$/, ""));
 }
 
@@ -119,7 +131,7 @@ function renderMatchups() {
       <div class="grid">
         ${items.map(({ type, by }) => {
           const bg = COLORS[type];
-          const sub = showBy && multiplier !== 1 && by.length === 1 ? `<small>via ${by[0]}</small>` : "";
+          const sub = showBy && by.length === 1 ? `<small>via ${by[0]}</small>` : "";
           return `<div class="cell" style="--tc:${bg};--fg:${textColorFor(bg)}">${type}${sub}</div>`;
         }).join("")}
       </div>
