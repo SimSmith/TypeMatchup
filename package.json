@@ -1,12 +1,16 @@
 {
   "name": "typematchup",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "Pokémon type matchup calculator - static site, deployable to Vercel as-is.",
+  "description": "Pokémon type matchup calculator - a static site whose whole app is one prerendered index.html.",
   "type": "module",
   "scripts": {
-    "test": "node --test",
-    "dev": "npx --yes serve@14.2.4 ."
+    "dev": "node scripts/dev.js",
+    "build": "node scripts/build.js",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
   },
   "license": "MIT"
 }
