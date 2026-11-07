@@ -12,10 +12,9 @@ function inner(id, tag) {
   return match[1];
 }
 
-test("index.html fits in the first round trip (IW10) with brotli and gzip", () => {
-  const { brotli, gzip } = sizes(html);
-  assert.ok(brotli <= budget, `${brotli} B brotli is over the ${budget} B budget`);
-  assert.ok(gzip <= budget, `${gzip} B gzip is over the ${budget} B budget`);
+test("index.html compresses within its budget at every brotli and gzip level", () => {
+  const { worst } = sizes(html);
+  assert.ok(worst.bytes <= budget, `${worst.bytes} B with ${worst.encoding} ${worst.level} is over the ${budget} B budget`);
 });
 
 test("index.html needs no other request to paint or run", () => {

@@ -11,10 +11,13 @@ const path = (file) => fileURLToPath(new URL(`../${file}`, import.meta.url));
 // color-mix() in the stylesheet already needs browsers at least this new.
 const target = ["chrome111", "edge111", "firefox113", "safari16.4"];
 
-// TCP's initial congestion window is 10 segments of 1460 B (IW10). Leaving
-// ~600 B for response headers and TLS/HTTP framing, index.html must compress
-// to 14,000 B or less to arrive in the first round trip.
-export const budget = 14_000;
+// TCP's initial congestion window: 10 segments of 1460 B (IW10, RFC 6928).
+export const iw10 = 10 * 1460;
+// Bytes left for the response headers and the HTTP/2 and TLS framing.
+// test/iw10.test.js measures them on a real connection.
+export const overhead = 600;
+// So index.html must compress to 14,000 B or less to arrive in the first round trip.
+export const budget = iw10 - overhead;
 
 // Files served beside index.html. The page links them but needs none to paint.
 export const assets = ["favicon.ico", "site.webmanifest", "icons/apple-touch-icon.png",
@@ -63,11 +66,31 @@ export async function page() {
   return { html, parts };
 }
 
-export function sizes(content) {
+// Vercel compresses on the fly, with brotli or gzip at a level it does not
+// document, so the page has to fit at every brotli quality and gzip level.
+export function compressions(content) {
   const bytes = Buffer.from(content);
-  return {
-    raw: bytes.length,
-    brotli: brotliCompressSync(bytes, { params: { [constants.BROTLI_PARAM_QUALITY]: 11, [constants.BROTLI_PARAM_MODE]: constants.BROTLI_MODE_TEXT, [constants.BROTLI_PARAM_SIZE_HINT]: bytes.length } }).length,
-    gzip: gzipSync(bytes, { level: 9 }).length,
-  };
+  const brotli = Array.from({ length: 12 }, (_, quality) => ({
+    encoding: "br", level: quality,
+    body: brotliCompressSync(bytes, { params: { [constants.BROTLI_PARAM_QUALITY]: quality, [constants.BROTLI_PARAM_SIZE_HINT]: bytes.length } }),
+  }));
+  const gzip = Array.from({ length: 9 }, (_, i) => ({ encoding: "gzip", level: i + 1, body: gzipSync(bytes, { level: i + 1 }) }));
+  return [...brotli, ...gzip];
+}
+
+/** The largest body for each encoding, whatever level the CDN picks. */
+export function worstCompressions(content) {
+  const largest = new Map();
+  for (const c of compressions(content)) {
+    const current = largest.get(c.encoding);
+    if (!current || c.body.length > current.body.length) largest.set(c.encoding, c);
+  }
+  return [...largest.values()];
+}
+
+/** Raw size, and the smallest and largest compressed sizes over every level. */
+export function sizes(content) {
+  const all = compressions(content).sort((a, b) => a.body.length - b.body.length);
+  const describe = ({ encoding, level, body }) => ({ encoding, level, bytes: body.length });
+  return { raw: Buffer.byteLength(content), best: describe(all[0]), worst: describe(all.at(-1)) };
 }

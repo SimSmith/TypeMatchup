@@ -12,19 +12,21 @@ A small web app to check Pokémon type effectiveness (Gen 6+ chart, 18 types). I
 ```sh
 npm install     # esbuild, the only (dev) dependency
 npm run dev     # http://localhost:3000, rebuilt on every reload (PORT to override)
-npm test        # type chart and matchup logic, the page budget and the prerendered view
+npm test        # type chart and matchup logic, the page budget, the IW10 wire test and the prerendered view
 npm run build   # writes dist/ and enforces the first-load budget
 ```
 
 ## Performance budget
 
-The page must fit in TCP's initial congestion window (IW10): 10 segments × 1460 B, minus about 600 B for headers and TLS/HTTP framing. That leaves **14,000 B for `index.html`**. `npm run build` and `npm test` fail if it is larger with either brotli or gzip.
+The page must fit in TCP's initial congestion window (IW10): 10 segments × 1460 B, minus 600 B for headers and TLS/HTTP framing. That leaves **14,000 B for `index.html`**. Vercel compresses responses on the fly and does not document the level, so `npm run build` and `npm test` fail if the page is larger at any brotli quality or gzip level.
 
-The build inlines everything the app needs into `index.html`: the minified CSS, the app bundled into one minified script, and the SVG favicon as a `data:` URL. It is about 5.3 KB brotli (6.1 KB gzip); the build prints the exact sizes. The manifest, PNG icons and `favicon.ico` stay separate files: nothing on the page waits for them, and browsers use them only to install the app, add it to a home screen, or show a tab icon where SVG favicons are unsupported.
+The build inlines everything the app needs into `index.html`: the minified CSS, the app bundled into one minified script, and the SVG favicon as a `data:` URL. It is 5.3 KB at the best brotli quality and 7.1 KB at the worst (brotli 0); the build prints the exact sizes. The manifest, PNG icons and `favicon.ico` stay separate files: nothing on the page waits for them, and browsers use them only to install the app, add it to a home screen, or show a tab icon where SVG favicons are unsupported.
 
 The build also prerenders the opening view (empty slots, hint and the 18-type picker) with the same functions the app renders with (`src/view.js`). The first paint is complete without waiting for the script. The app writes a section only when its markup changes, so opening the page without a selection changes nothing in the DOM. The script is a classic inline `<script>` at the end of `<body>`, so a shared link like `/#defending/water+flying` renders its selection before the first paint.
 
 On a throttled phone profile (4× CPU slowdown, 1.6 Mbit/s, 150 ms round trips), the previous four files (`index.html`, `styles.css`, `src/app.js`, then `src/types.js`) took three round trips. They painted at about 385 ms with an empty picker, which filled in at about 540 ms. Now one request paints the finished page at about 235 ms.
+
+`test/iw10.test.js` is the regression test for the first round trip itself. It serves the built page the way Vercel does: HTTP/2 over TLS 1.3, with the response headers Vercel sent for this page, compressed at each encoding's worst level. A proxy counts the bytes the server puts on the TCP connection for that response. The test fails if they exceed 14,600 B, or if headers and framing take more than the 600 B the budget leaves for them. A pre-shared key gives a real TLS connection without a certificate, so the test needs no network. Today the response is at most 7.4 KB on the wire, about 290 B of it headers and framing.
 
 To keep the budget, add markup and CSS sparingly; the build prints all sizes.
 
@@ -39,7 +41,7 @@ To keep the budget, add markup and CSS sparingly; the build prints all sizes.
 | `scripts/page.js` | Page assembly: inlining, prerendering, size measurement and the budget |
 | `scripts/build.js`, `scripts/dev.js` | Production build to `dist/` and the local dev server |
 | `icons/`, `favicon.ico`, `site.webmanifest` | Browser and home-screen icons, with editable SVG sources |
-| `test/` | `node --test` checks for the chart data and the built page |
+| `test/` | `node --test` checks for the chart data, the built page and its size on the wire (`iw10.test.js`) |
 
 ## App icon
 
