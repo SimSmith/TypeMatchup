@@ -7,10 +7,10 @@
   <meta name="description" content="Pick one or two types and see how effective every type matchup is, attacking or defending." />
   <meta name="theme-color" content="#14161c" />
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
-  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+  <link rel="icon" type="image/svg+xml" href="<!--icon-->" />
   <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <link rel="stylesheet" href="/styles.css" />
+  <!--styles-->
 </head>
 <body>
   <header class="top">
@@ -23,19 +23,19 @@
 
   <main>
     <section class="selection" aria-label="Selected types">
-      <div class="slots" id="slots"></div>
-      <button class="clear" id="clear" type="button">Clear</button>
+      <div class="slots" id="slots"><!--slots--></div>
+      <button class="clear" id="clear" type="button" hidden>Clear</button>
     </section>
 
     <div class="mode" role="radiogroup" aria-label="Mode">
       <button role="radio" data-mode="defending" aria-checked="true">Defending</button>
       <button role="radio" data-mode="attacking" aria-checked="false">Attacking</button>
     </div>
-    <p class="hint" id="hint"></p>
+    <p class="hint" id="hint"><!--hint--></p>
 
-    <section class="picker" id="picker" aria-label="Pick types"></section>
+    <section class="picker" id="picker" aria-label="Pick types"><!--picker--></section>
 
-    <section id="matchups" class="results" aria-live="polite"></section>
+    <section id="matchups" class="results" aria-live="polite"><!--matchups--></section>
     <section id="chart" class="chart-wrap" hidden></section>
   </main>
 
@@ -43,6 +43,6 @@
     Gen&nbsp;6+ type chart · Tap up to two types · Link updates as you pick, so you can share it.
   </footer>
 
-  <script type="module" src="/src/app.js"></script>
+  <!--script-->
 </body>
 </html>
