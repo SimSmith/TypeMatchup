@@ -33,6 +33,9 @@
 
 html, body { margin: 0; }
 
+/* Allow scrolling in both directions without pinch or double-tap zoom. */
+html, .table-scroll { touch-action: pan-x pan-y; }
+
 body {
   background: var(--bg);
   color: var(--text);
