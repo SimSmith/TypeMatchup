@@ -54,16 +54,11 @@ export function pickerHTML(selected) {
 }
 
 /** Plain text (not markup) for the line above the picker. */
-export function hintText({ selected, mode }) {
-  const s = selected.join(" / ");
-  if (!s) {
-    return mode === "defending"
-      ? "Pick the defending Pokémon's type(s) to see what hits it hard."
-      : "Pick move type(s) to see what they hit hard.";
-  }
-  if (mode === "defending") return `Attacks against a ${s} Pokémon:`;
-  if (selected.length === 1) return `${s} moves against each type:`;
-  return `Best of ${selected.join(" or ")} moves against each type:`;
+export function hintText({ mode }) {
+  // Keep the hint unchanged as types are toggled so the picker never shifts.
+  return mode === "defending"
+    ? "Pick up to two defending types."
+    : "Pick up to two move types.";
 }
 
 export function matchupsHTML({ selected, mode }) {
